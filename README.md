@@ -1,101 +1,173 @@
-# 🚀 pbi-to-sql
+# 🚀 **pbi-to-sql**
 
-### _"Turn your Power BI model into a fully queryable SQL database — like a data wizard, but with Gen Z energy."_
+### **_"Power BI → SQL → AI. Your Semantic Model Just Got an Upgrade."_**
+
+Transform your **Power BI Semantic Model** into a **fully queryable SQL database** — with structure, relationships, metadata, and tech swagger intact.
+
+This is not another exporter.
+This is a **semantic reconstruction engine** for modern AI + analytics stacks.
 
 ---
 
-## 🧠 What Even _Is_ This?
+## 🧠 **What Even _Is_ This?**
 
-**pbi-to-sql** is your new data pipeline bestie.
-It takes your **Power BI Semantic Model (.tmdl)** + **CSV exports**, reverse-engineers the whole thing, and builds a **SQLite database** that:
+**pbi-to-sql** takes your `.tmdl` files + CSV data dumps and rebuilds your Power BI model into a **relational SQLite database** that your tools _actually_ understand.
 
-- Preserves **tables**
-- Preserves **columns**
-- Preserves **relationships**
-- Preserves **metadata**
-- Preserves **your sanity** 🧘‍♂️
+It ingests:
 
-Basically: everything your PBIX knows, but now it’s SQL-native.
+- Tables
+- Columns
+- Data Types
+- Relationships
+- Metadata
+
+…and produces:
+
+- A structured, schema-accurate SQL database
+- Indexes + optimized relationships
+- A metadata catalog
+- RAG-ready semantic context (coming soon 👀)
 
 Perfect for:
 
-- AI pipelines 🤖
-- Analytics automation 📊
-- Local RAG systems 🔍
-- Query engines (DuckDB, SQLite extensions, mother of all joins) 🔥
-- Replacing Power BI for backend workflows (bold but fair) 💼
+- Local RAG frameworks
+- AI agents & LLM query engines
+- Analytics automation
+- DuckDB/SQLite extensions
+- Anything that loves SQL more than PBIX
+
+Think of it as giving your PBIX a second life — one where it speaks fluent SQL.
 
 ---
 
-## ✨ Core Features
+## ✨ **Core Features**
 
-### 🧩 Modular Architecture (SRP-friendly AF)
+### 🔍 **1. TMDL Parsing That Goes Hard**
 
-- TMDL parsing
-- Relationship extraction
-- Table metadata
-- CSV loaders
-- SQLite schema builder
-- Index engine
-- Metadata catalog
-- Pipeline orchestrator
+Fully reverse-engineers your semantic model:
 
-Everything is a class.
-Everything has a job.
+- Extracts tables & data types
+- Resolves relationships (one-to-many, many-to-many, bidirectional ― we don’t judge)
+- Handles circular references gracefully
+- Maps everything to clean SQLite types
+
+Your model isn’t “converted.”
+It’s **rebuilt**.
+
+---
+
+### 🧱 **2. Modular Architecture (built like a real product)**
+
+Breakdown of components:
+
+- **TMDL Parser** – extracts model definitions
+- **Relationship Engine** – reconstructs FK logic
+- **Metadata Layer** – catalogues schema, fields & lineage
+- **CSV Loader** – hydrates the database
+- **Schema Builder** – creates SQL structures
+- **Index Manager** – performance tuning
+- **Pipeline Orchestrator** – reusable ops with zero chaos
+
+Everything has a single job.
 Nothing cries internally. 😌
 
 ---
 
-## 🔥 Why This Exists
+### ⚡ **3. Pipelines That Adapt to Your Workflow**
 
-Because Power BI is **amazing for visuals**,
-but terrible when you’re like:
+Pick your mood:
 
-> "Hmm, I wish I could run LLMs directly on my model."
+- **Full Ingestion** — rebuild from scratch
+- **Schema Only** — generate tables + relationships
+- **Data Only** — refresh data without touching structure
+- **Semantic Mode (coming soon)** — AI-powered table summaries + RAG metadata
 
-Or:
-
-> "Would be nice if this was just SQL."
-
-This project says **say less fam** 🙏 and gives you exactly that.
+Scalable. Clean. Predictable.
 
 ---
 
-## 🎯 Roadmap (aka "things we’ll definitely oversell in the next demo")
+### 🛠️ **4. Developer-First CLI**
 
-- 🔌 **FastAPI service layer** — run pipelines from an API
-- 📚 **Auto SQL docs** — generate a live data dictionary
-- 🧬 **ML/AI Mode** — embeddings, vector search, RAG integrations
-- 🎛️ **DuckDB backend** — because speed matters
-- 📡 **Streaming ingestion** — real-time Power BI → SQL
-- 🧪 **Full unit-testing suite**
+A simple, interactive launcher:
 
-Yeah… we’re basically building the next mini dbt.
+```bash
+python main_cli.py
+```
 
----
+It asks:
 
-## 💅 Aesthetic Philosophy
+- Where your TMDL lives
+- Where your CSVs live
+- Where you want the output
 
-- Zero boilerplate.
-- Zero "enterprise complexity for no reason".
-- Maximum modularity.
-- Maximum vibes.
+Then handles everything like a responsible adult.
 
 ---
 
-## 👤 Author
+## 🔥 **Why This Exists**
 
-Built for analysts, audit nerds, data engineers, and anyone who looked at a PBIX one day and said:
+Because Power BI is amazing for dashboards
+…but terrible if you want:
 
-> "I wish I could SQL this."
+- SQL access
+- AI-ready metadata
+- Local LLM reasoning
+- Automated analytics pipelines
+- Something other tools can actually query
 
-This repo: **grants that wish**. 🪄
+We all know the moment:
+
+> “Damn… I wish I could just SQL this PBIX.”
+
+Well — congratulations.
+**Wish granted.** 🪄
 
 ---
 
-## ⭐ Final Note
+## 🎯 **Roadmap (a.k.a. “features we’ll definitely hype in the next demo”)**
 
-If you break something, it’s not your fault.
-If everything works perfectly? Absolutely take credit for it.
+- 🔌 FastAPI ingestion/semantic service
+- 📚 Auto-generated SQL documentation
+- 🧬 Embeddings & vector-search mode
+- ⚡ DuckDB backend for high-performance workflows
+- 📡 Streaming ingestion (Power BI → SQL → AI in real time)
+- 🧪 Full unit-testing suite for the ops-nerds
+- 🤖 Built-in semantic layer enrichment for RAG
+
+Basically:
+Tiny dbt + tiny Airbyte + tiny semantic layer engine.
+
+---
+
+## 💅 **Design Philosophy**
+
+- No over-engineering for clout
+- Modular, composable, dev-friendly
+- Local-first mindset
+- Maximum vibes — minimum friction
+
+---
+
+## 👤 **Author**
+
+Made by people who looked at a PBIX and said:
+
+> “Why is this locked inside a GUI? Let me unleash the data.”
+
+If you relate… welcome home.
+
+Author: **[Sudharshan TK](https://github.com/tks18) 💖**
+
+Repo: **[https://github.com/tks18/pbi-to-sql](https://github.com/tks18/pbi-to-sql)**
+
+---
+
+## ⭐ **Final Note**
+
+If something breaks?
+That’s a feature — you just discovered a new workflow.
+
+If everything works flawlessly?
+Claim full credit. You’re the hero now.
 
 Happy querying ✨
