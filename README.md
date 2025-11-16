@@ -1,6 +1,6 @@
 # 🚀 **pbi-to-sql**
 
-### **_"Stop letting Power BI hide your data. Turn your semantic model into a full SQL + AI powerhouse."_**
+#### _"Stop letting Power BI hide your data. Turn your semantic model into a full SQL + AI powerhouse."_
 
 Meet **pbi-to-sql** — the **next-gen RAG infrastructure tool** that extracts your _entire_ Power BI Semantic Model and rebuilds it into a **high-performance SQLite database with an embedded AI semantic layer.**
 
@@ -12,7 +12,7 @@ Repo: **[https://github.com/tks18/pbi-to-sql](https://github.com/tks18/pbi-to-sq
 
 ---
 
-# ✨ **Why This Exists**
+## ✨ **Why This Exists**
 
 Your dashboards look fire, sure.
 But your RAG AI?
@@ -34,9 +34,9 @@ it **queries meaning**.
 
 ---
 
-# 🔥 **This Thing Slaps (Features)**
+## 🔥 **This Thing Slaps (Features)**
 
-## **1. Full-Blown TMDL Parsing**
+### **1. Full-Blown TMDL Parsing**
 
 This is not a CSV yeeter. This is a full semantic model interpreter.
 
@@ -50,13 +50,13 @@ If your PBIX understands it, **pbi-to-sql** rebuilds it.
 
 ---
 
-## **2. The AI Semantic Layer 🧠 (The Main Character)**
+### **2. The AI Semantic Layer 🧠 (The Main Character)**
 
 This is where the app goes from tool → platform.
 
 Everything runs **100% locally** using `langchain` + `ollama` + SLMs like `gemma:4b`.
 
-### What it generates:
+#### What it generates:
 
 - **rag_model_summary**
   High-level overview of the entire semantic model.
@@ -82,7 +82,7 @@ Example:
 
 > `"This links each expense transaction to its specific sub-category for downstream spend analysis."`
 
-### And the killer feature:
+#### And the killer feature:
 
 All of these summaries are **stored directly inside the database** as regular SQL tables.
 
@@ -100,7 +100,7 @@ No guessing.
 
 ---
 
-## **3. Boujee RAG-Ready Docs 📄**
+### **3. Boujee RAG-Ready Docs 📄**
 
 Automatically generated:
 
@@ -114,11 +114,11 @@ Clean. Readable. Actually useful.
 
 ---
 
-## **4. Modular AF Architecture (The Glow-Up 💅)**
+### **4. Modular AF Architecture (The Glow-Up 💅)**
 
 This isn’t some 900-line Python file glued together with vibes.
 
-### Architecture includes:
+#### Architecture includes:
 
 - **Adapters** → DB integrations (SQLite today, Postgres tomorrow)
 - **Service Layer** → ingestion logic + semantic analysis
@@ -131,7 +131,7 @@ No rewrite needed.
 
 ---
 
-## **5. Multiple Pipelines = Pick Your Adventure 🧩**
+### **5. Multiple Pipelines = Pick Your Adventure 🧩**
 
 - **FullIngestionPipeline**
   Rebuilds everything: schema + data + semantics.
@@ -149,7 +149,7 @@ Flexible enough for GUIs, APIs, cron jobs, or agent workflows.
 
 ---
 
-## **6. A CLI That Doesn’t Make You Cry**
+### **6. A CLI That Doesn’t Make You Cry**
 
 Just run:
 
@@ -170,7 +170,7 @@ Then it vibecrafts your entire RAG database.
 
 ---
 
-# 🚀 **Usage**
+## 🚀 **Usage**
 
 ### **Prerequisites**
 
@@ -206,7 +206,7 @@ Everything in one clean output folder.
 
 ---
 
-# 🔮 **The Next Szn (Roadmap)**
+## 🔮 **The Next Szn (Roadmap)**
 
 - [ ] Real PostgresAdapter implementation
 - [ ] FastAPI semantic & ingestion backend
@@ -230,7 +230,7 @@ Repo: **[https://github.com/tks18/pbi-to-sql](https://github.com/tks18/pbi-to-sq
 
 ---
 
-# ⭐ **Final Note**
+## ⭐ **Final Note**
 
 This isn’t ETL.
 This is a **data model emancipation engine**.
