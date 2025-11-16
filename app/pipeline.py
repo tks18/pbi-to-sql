@@ -113,7 +113,7 @@ class IngestionPipeline:
                 return yaml.safe_load(f) or {}
 
         suggestions = suggester_func(*args)
-        # We always write to the derived path
+        # always write to the derived path
         with open(path, "w", encoding="utf-8") as f:
             yaml.dump(suggestions, f, sort_keys=False)
         print(

@@ -2,7 +2,7 @@ import asyncio
 import sys
 from pathlib import Path
 from app.pipeline import IngestionPipeline
-from app.adapters.sqlite import SQLiteAdapter  # We will create this next
+from app.adapters.sqlite import SQLiteAdapter
 
 
 def get_required_path(prompt: str) -> Path:
