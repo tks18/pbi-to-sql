@@ -15,15 +15,15 @@ class ModelAnalyzer:
         referenced: Dict[str, Set[str]] = {}
 
         for r in relationships:
-            to_tbl = str(r['to_table'])
-            to_col = str(r['to_col'])
+            to_tbl = str(r.to_table)
+            to_col = str(r.to_col)
             referenced.setdefault(to_tbl, set()).add(to_col)
 
         for t, cols in tables.items():
             if is_tf_table(t):
                 continue
 
-            names = [str(c['name']) for c in cols]
+            names = [str(c.name) for c in cols]
             cand: List[str] = []
 
             if t in referenced:
@@ -50,8 +50,8 @@ class ModelAnalyzer:
         idx: Dict[str, List[str]] = {}
 
         for r in relationships:
-            from_tbl, from_col = str(r['from_table']), str(r['from_col'])
-            to_tbl, to_col = str(r['to_table']), str(r['to_col'])
+            from_tbl, from_col = str(r.from_table), str(r.from_col)
+            to_tbl, to_col = str(r.to_table), str(r.to_col)
 
             idx.setdefault(from_tbl, [])
             if from_col not in idx[from_tbl]:
@@ -63,7 +63,7 @@ class ModelAnalyzer:
 
         for t, cols in tables.items():
             for c in cols:
-                cname = str(c['name'])
+                cname = str(c.name)
                 if cname.lower().endswith("id") or cname.lower().endswith("_id") or cname.lower().endswith("uid") or cname.lower().endswith("key"):
                     idx.setdefault(t, [])
                     if cname not in idx[t]:

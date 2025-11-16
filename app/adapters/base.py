@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Iterable, List, Dict, Set, Optional, Any
 from pathlib import Path
 import pandas as pd
-from app.types import TableDefs, RelationshipDef, CycleGroups
-from app.schema_generator import SchemaGenerator
+from app.types import ColumnDef, TableDefs, RelationshipDef, CycleGroups
+from app.core.schema_generator import SchemaGenerator
 
 
 class DatabaseAdapter(ABC):
@@ -54,7 +54,7 @@ class DatabaseAdapter(ABC):
         pass
 
     @abstractmethod
-    async def populate_metadata(self, table: str, cols: List[Dict[str, Any]], csv_path: Path):
+    async def populate_metadata(self, table: str, cols: List[ColumnDef], csv_path: Path):
         """Populate metadata for a single table."""
         pass
 
@@ -76,4 +76,19 @@ class DatabaseAdapter(ABC):
     @abstractmethod
     async def fetch_all(self, query: str, params: tuple = ()) -> Iterable:
         """Fetch all results for a query (for doc generator)."""
+        pass
+
+    @abstractmethod
+    async def embed_rag_summary(self, summary: str):
+        """Embeds the AI-generated summary into a dedicated table."""
+        pass
+
+    @abstractmethod
+    async def embed_table_summary(self, table_name: str, summary: str):
+        """Embeds an AI-generated summary for a single table."""
+        pass
+
+    @abstractmethod
+    async def embed_relationship_summary(self, rel_name: str, summary: str):
+        """Embeds an AI-generated summary for a single relationship."""
         pass

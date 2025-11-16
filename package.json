@@ -1,6 +1,6 @@
 {
   "name": "pbi-to-sql",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Turn your Power BI model into a fully queryable SQL database — like a data wizard, but with Gen Z energy.",
   "repository": "https://github.com/tks18/pbi-to-sql",
   "author": "tks18 <tksudharshan@gmail.com>",

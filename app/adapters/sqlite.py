@@ -6,8 +6,8 @@ import os
 from pathlib import Path
 from typing import Iterable, List, Dict, Set, Optional, Any
 from app.adapters.base import DatabaseAdapter
-from app.types import TableDefs, RelationshipDef, CycleGroups
-from app.schema_generator import SchemaGenerator
+from app.types import ColumnDef, TableDefs, RelationshipDef, CycleGroups
+from app.core.schema_generator import SchemaGenerator
 from app.utils import safe_name, is_tf_table, file_sha256
 
 
@@ -106,7 +106,7 @@ class SQLiteAdapter(DatabaseAdapter):
 
                     await cur.execute(sql_create)
                     old_cols = [c for c in [
-                        safe_name(c['name']) for c in cols] if c is not None]
+                        safe_name(c.name) for c in cols] if c is not None]
                     s_table_name = safe_name(t)
                     if not s_table_name or not old_cols:
                         continue
@@ -210,7 +210,18 @@ class SQLiteAdapter(DatabaseAdapter):
             "CREATE TABLE IF NOT EXISTS column_metadata (table_name TEXT, column_name TEXT, data_type TEXT, description TEXT, PRIMARY KEY (table_name, column_name));",
             "CREATE TABLE IF NOT EXISTS relationship_metadata (name TEXT PRIMARY KEY, from_table TEXT, from_col TEXT, to_table TEXT, to_col TEXT, cardinality TEXT);",
             "CREATE TABLE IF NOT EXISTS table_relationships (table_name TEXT, relationship_name TEXT, role TEXT, related_table TEXT, related_column TEXT);",
-            "CREATE TABLE IF NOT EXISTS column_statistics (table_name TEXT, column_name TEXT, total_count INTEGER, missing_count INTEGER, missing_percent REAL, unique_count INTEGER, unique_percent REAL, mean REAL, std_dev REAL, min REAL, max REAL, PRIMARY KEY (table_name, column_name));"
+            "CREATE TABLE IF NOT EXISTS column_statistics (table_name TEXT, column_name TEXT, total_count INTEGER, missing_count INTEGER, missing_percent REAL, unique_count INTEGER, unique_percent REAL, mean REAL, std_dev REAL, min REAL, max REAL, PRIMARY KEY (table_name, column_name));",
+            "CREATE TABLE IF NOT EXISTS rag_model_summary (summary_id TEXT PRIMARY KEY, summary_text TEXT, generated_at TEXT DEFAULT (datetime('now')));",
+            """CREATE TABLE IF NOT EXISTS rag_table_summaries (
+                table_name TEXT PRIMARY KEY,
+                summary TEXT,
+                generated_at TEXT DEFAULT (datetime('now'))
+            );""",
+            """CREATE TABLE IF NOT EXISTS rag_relationship_summaries (
+                relationship_name TEXT PRIMARY KEY,
+                summary TEXT,
+                generated_at TEXT DEFAULT (datetime('now'))
+            );"""
         ]
         async with self.conn.cursor() as cur:
             for sql in sql_statements:
@@ -231,25 +242,25 @@ class SQLiteAdapter(DatabaseAdapter):
             try:
                 await self._execute(
                     "INSERT OR REPLACE INTO relationship_metadata (name, from_table, from_col, to_table, to_col, cardinality) VALUES (?, ?, ?, ?, ?, ?)",
-                    (r.get("name"), r.get("from_table"), r.get("from_col"),
-                     r.get("to_table"), r.get("to_col"), r.get("cardinality"))
+                    (r.name, r.from_table, r.from_col,
+                     r.to_table, r.to_col, r.cardinality)
                 )
                 await self._execute(
                     "INSERT INTO table_relationships (table_name, relationship_name, role, related_table, related_column) VALUES (?, ?, ?, ?, ?)",
-                    (r.get("from_table"), r.get("name"),
-                     "from", r.get("to_table"), r.get("to_col"))
+                    (r.from_table, r.name,
+                     "from", r.to_table, r.to_col)
                 )
                 await self._execute(
                     "INSERT INTO table_relationships (table_name, relationship_name, role, related_table, related_column) VALUES (?, ?, ?, ?, ?)",
-                    (r.get("to_table"), r.get("name"), "to",
-                     r.get("from_table"), r.get("from_col"))
+                    (r.to_table, r.name, "to",
+                     r.from_table, r.from_col)
                 )
                 await self.conn.commit()
             except Exception as e:
                 print(
-                    f"[warn] failed to insert relationship metadata for {r.get('name')}: {e}")
+                    f"[warn] failed to insert relationship metadata for {r.name}: {e}")
 
-    async def populate_metadata(self, table: str, cols: List[Dict[str, Any]], csv_path: Path):
+    async def populate_metadata(self, table: str, cols: List[ColumnDef], csv_path: Path):
         if not self.conn:
             return
         csv_file = csv_path / f"{table}.csv"
@@ -274,9 +285,53 @@ class SQLiteAdapter(DatabaseAdapter):
         for c in cols:
             await self._execute(
                 "INSERT OR REPLACE INTO column_metadata (table_name, column_name, data_type, description) VALUES (?, ?, ?, ?)",
-                (table, c['name'], c['type'], None)
+                (table, c.name, c.type, None)
             )
         await self.conn.commit()
+
+    async def embed_rag_summary(self, summary: str):
+        """Inserts or replaces the AI-generated *model* summary."""
+        if not self.conn:
+            return
+        try:
+            await self._execute(
+                "INSERT OR REPLACE INTO rag_model_summary (summary_id, summary_text, generated_at) VALUES (?, ?, datetime('now'))",
+                ("main_summary", summary)
+            )
+            await self.conn.commit()
+        except Exception as e:
+            print(f"[warn] Failed to embed RAG model summary: {e}")
+            await self.conn.rollback()
+
+    async def embed_table_summary(self, table_name: str, summary: str):
+        """Inserts or replaces an AI-generated summary for a single table."""
+        if not self.conn:
+            return
+        try:
+            await self._execute(
+                "INSERT OR REPLACE INTO rag_table_summaries (table_name, summary, generated_at) VALUES (?, ?, datetime('now'))",
+                (table_name, summary)
+            )
+            await self.conn.commit()
+        except Exception as e:
+            print(
+                f"[warn] Failed to embed RAG summary for table {table_name}: {e}")
+            await self.conn.rollback()
+
+    async def embed_relationship_summary(self, rel_name: str, summary: str):
+        """Inserts or replaces an AI-generated summary for a single relationship."""
+        if not self.conn:
+            return
+        try:
+            await self._execute(
+                "INSERT OR REPLACE INTO rag_relationship_summaries (relationship_name, summary, generated_at) VALUES (?, ?, datetime('now'))",
+                (rel_name, summary)
+            )
+            await self.conn.commit()
+        except Exception as e:
+            print(
+                f"[warn] Failed to embed RAG summary for relationship {rel_name}: {e}")
+            await self.conn.rollback()
 
     def _profile_table_sync(self, table_name: str, db_path: str):
         tbl_safe = safe_name(table_name)

@@ -1,6 +1,6 @@
 from typing import List, Dict, Optional, Set, Tuple
 
-from app.types import TableDefs, RelationshipDef, DependencyGraph, TopoSortOrder, CycleGroups, ColumnDef
+from app.types import RelationshipDef, DependencyGraph, TopoSortOrder, CycleGroups, ColumnDef
 from app.utils import safe_name, is_tf_table
 
 
@@ -16,16 +16,16 @@ class SchemaGenerator:
     def build_fk_map(self, relationships: List[RelationshipDef]):
         """Builds maps for FK clause generation."""
         for r in relationships:
-            from_tbl_raw = r.get('from_table')
-            from_col_raw = r.get('from_col')
-            to_tbl_raw = r.get('to_table')
-            to_col_raw = r.get('to_col')
+            from_tbl_raw = r.from_table
+            from_col_raw = r.from_col
+            to_tbl_raw = r.to_table
+            to_col_raw = r.to_col
             if not all([from_tbl_raw, from_col_raw, to_tbl_raw, to_col_raw]):
                 continue  # Skip relationships with missing parts
             from_tbl, from_col = str(from_tbl_raw), str(from_col_raw)
             to_tbl, to_col = str(to_tbl_raw), str(to_col_raw)
 
-            if r.get("skip_fk", False) or is_tf_table(from_tbl) or is_tf_table(to_tbl):
+            if r.skip_fk or is_tf_table(from_tbl) or is_tf_table(to_tbl):
                 continue
 
             clause = self.generate_fk_clause(from_col, to_tbl, to_col)
@@ -52,12 +52,12 @@ class SchemaGenerator:
             return None
         col_defs = []
         for c in columns:
-            s_col_name = safe_name(c['name'])
+            s_col_name = safe_name(c.name)
             if s_col_name:
-                col_defs.append(f"[{s_col_name}] {c['type']}")
+                col_defs.append(f"[{s_col_name}] {c.type}")
             else:
                 print(
-                    f"[warn] Skipping invalid column {c.get('name')} in table {s_table_name}")
+                    f"[warn] Skipping invalid column {c.name} in table {s_table_name}")
 
         col_defs.extend(fk_clauses)
         if not col_defs:
@@ -70,10 +70,10 @@ class SchemaGenerator:
         """Builds a graph for topological sorting."""
         g: DependencyGraph = {}
         for r in relationships:
-            if r.get("skip_fk", False):
+            if r.skip_fk:
                 continue
-            a_raw = r.get('from_table')
-            b_raw = r.get('to_table')
+            a_raw = r.from_table
+            b_raw = r.to_table
             if not a_raw or not b_raw:
                 continue
             a, b = str(a_raw), str(b_raw)
