@@ -1,6 +1,7 @@
 import asyncio
 from pathlib import Path
 from typing import List, Set
+
 from app.adapters.base import DatabaseAdapter
 from app.types import TableDefs, RelationshipDef
 

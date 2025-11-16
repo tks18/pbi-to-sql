@@ -1,8 +1,9 @@
 import os
 import re
 from typing import List, Optional
-from .utils import _kv_from_line, _split_table_column, map_dtype, is_tf_table
-from .types import TableDefs, RelationshipDef, ColumnDef
+
+from app.utils import _kv_from_line, _split_table_column, map_dtype, is_tf_table
+from app.types import TableDefs, RelationshipDef, ColumnDef
 
 
 class TMDLParser:

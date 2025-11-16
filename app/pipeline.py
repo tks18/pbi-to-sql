@@ -1,14 +1,15 @@
 import yaml
 import os
 from pathlib import Path
-from .types import TableDefs, RelationshipDef
-from .tmdl_parser import TMDLParser
-from .model_analyzer import ModelAnalyzer
-from .schema_generator import SchemaGenerator
-from .metadata_manager import MetadataManager
-from .doc_generator import DocumentationGenerator
-from .adapters.base import DatabaseAdapter
 from typing import Dict, Any, Optional
+
+from app.types import TableDefs, RelationshipDef
+from app.tmdl_parser import TMDLParser
+from app.model_analyzer import ModelAnalyzer
+from app.schema_generator import SchemaGenerator
+from app.metadata_manager import MetadataManager
+from app.doc_generator import DocumentationGenerator
+from app.adapters.base import DatabaseAdapter
 
 
 class IngestionPipeline:

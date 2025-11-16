@@ -1,6 +1,7 @@
 from typing import List, Dict, Optional, Set, Tuple
-from .types import TableDefs, RelationshipDef, DependencyGraph, TopoSortOrder, CycleGroups, ColumnDef
-from .utils import safe_name, is_tf_table
+
+from app.types import TableDefs, RelationshipDef, DependencyGraph, TopoSortOrder, CycleGroups, ColumnDef
+from app.utils import safe_name, is_tf_table
 
 
 class SchemaGenerator:

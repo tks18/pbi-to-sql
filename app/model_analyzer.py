@@ -1,6 +1,7 @@
 from typing import List, Dict, Set
-from .types import TableDefs, RelationshipDef
-from .utils import is_tf_table
+
+from app.types import TableDefs, RelationshipDef
+from app.utils import is_tf_table
 
 
 class ModelAnalyzer:
