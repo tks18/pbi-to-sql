@@ -1,7 +1,7 @@
 [project]
 name = "pbi-to-sql"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.0.1"
+description = "Turn your Power BI model into a fully queryable SQL database — like a data wizard, but with Gen Z energy."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
